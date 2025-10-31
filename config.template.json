@@ -1,0 +1,133 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Toduba Custom Agents Configuration Template",
+  "description": "Configuration template for customizing the multi-agent system",
+
+  "workspace": {
+    "rootDirectory": "workspace",
+    "description": "Base directory for all agent work artifacts",
+    "subdirectories": {
+      "workPackages": "work_packages",
+      "journals": "journals",
+      "validationResults": "validation_results"
+    }
+  },
+
+  "mcpServers": {
+    "description": "Configure your custom MCP servers here",
+    "examples": {
+      "YourPlatform": {
+        "type": "http",
+        "url": "https://your-mcp-server.example.com/mcp/",
+        "headers": {
+          "Authorization": "Bearer YOUR_API_TOKEN_HERE"
+        },
+        "tools": {
+          "description": "List of tools your MCP server provides",
+          "categories": {
+            "general": [
+              "list_projects",
+              "list_sessions",
+              "get_document_content",
+              "rag_retrieve_documents"
+            ],
+            "studio": [
+              "get_user_story",
+              "get_task",
+              "get_requirement",
+              "list_tests"
+            ],
+            "code": [
+              "list_repositories",
+              "search",
+              "cat",
+              "tree",
+              "grep",
+              "find_usages"
+            ]
+          }
+        }
+      },
+      "Playwright": {
+        "type": "stdio",
+        "command": "npx",
+        "args": ["-y", "@playwright/mcp-server"]
+      },
+      "Memory": {
+        "type": "stdio",
+        "command": "mcp-server-memory"
+      }
+    }
+  },
+
+  "agents": {
+    "description": "Agent behavior configuration",
+    "orchestrator": {
+      "name": "Atlas",
+      "neverImplements": true,
+      "alwaysCoordinates": true
+    },
+    "developmentAgents": [
+      "ai-engineer",
+      "backend-engineer",
+      "frontend-engineer"
+    ],
+    "validationAgents": [
+      "qa-engineer",
+      "code-reviewer",
+      "cybersec-engineer"
+    ],
+    "utilityAgents": [
+      "debug-detective",
+      "backend-issue-fixer",
+      "frontend-issue-fixer",
+      "playwright-issue-analyzer",
+      "pr-diff-documenter"
+    ]
+  },
+
+  "features": {
+    "enableJournaling": true,
+    "enableWorkPackages": true,
+    "enableCompletionFlags": true,
+    "enableThreeLayerReview": true
+  },
+
+  "paths": {
+    "description": "Customizable path patterns using placeholders",
+    "workPackage": "{{workspaceRoot}}/work_packages/{{role}}/{{taskId}}_{{role}}_workpackage.md",
+    "journal": "{{workspaceRoot}}/journals/{{role}}/{{taskId}}_{{agentName}}_journal.md",
+    "completionFlag": "{{workspaceRoot}}/flags/{{taskId}}_{{role}}_complete.flag",
+    "validationResult": "{{workspaceRoot}}/validation_results/{{taskId}}_{{validationType}}.md"
+  },
+
+  "naming": {
+    "description": "Customize naming conventions",
+    "mcpToolPrefix": "mcp__{{mcpServerName}}__",
+    "agentNamePattern": "{{role}}-{{specialization}}",
+    "skillNamePattern": "{{functionality}}-{{aspect}}"
+  },
+
+  "installation": {
+    "description": "Installation instructions",
+    "methods": [
+      "Marketplace: claude plugin install custom-claude-plugins",
+      "Local symlink: ln -s $(pwd) ~/.claude/plugins/custom-claude-plugins",
+      "Git clone: git clone https://github.com/tiboxtibo/custom-claude-plugins ~/.claude/plugins/custom-claude-plugins",
+      "Copy to project: cp -r . /path/to/project/.claude/plugins/custom-claude-plugins"
+    ]
+  },
+
+  "customization": {
+    "description": "Steps to customize this template for your use case",
+    "steps": [
+      "1. Update marketplace.json with your marketplace name and owner info",
+      "2. Configure your MCP servers in .claude/settings.json",
+      "3. Update workspaceRoot in marketplace.json config section",
+      "4. Rename skills to match your workflow (context-gather, tdd-workflow, code-review)",
+      "5. Update agent files to reference your MCP tool names",
+      "6. Customize commands in commands/ directory",
+      "7. Update documentation with your specific use cases"
+    ]
+  }
+}

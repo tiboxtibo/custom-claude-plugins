@@ -1,0 +1,28 @@
+{
+  "name": "custom-plugin-marketplace",
+  "owner": {
+    "name": "Matteo Tiboldo",
+    "email": "mtiboldo@toduba.it"
+  },
+  "metadata": {
+    "description": "Generic plugin marketplace template for Claude Code with customizable multi-agent system",
+    "version": "1.0.0",
+    "repository": "",
+    "license": "MIT"
+  },
+  "config": {
+    "workspaceRoot": "workspace",
+    "mcpServerName": "YourPlatform",
+    "enableJournaling": true,
+    "enableWorkPackages": true
+  },
+  "plugins": [
+    {
+      "name": "multi-agent-system",
+      "description": "Multi-agent collaboration system with 12 specialized agents, 3 composable skills (context gathering, TDD workflow, code review), and 24 workflow commands. Atlas coordinates all agents for comprehensive development workflow.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./context-gather", "./tdd-workflow", "./code-review"]
+    }
+  ]
+}
