@@ -5,7 +5,6 @@ allowed-tools:
   - Grep
 argument-hint: "[message]"
 description: "Crea commit con messaggi strutturati seguendo best practices"
-model: sonnet
 ---
 
 # Toduba Commit - Gestione Commit Strutturati 📝

@@ -7,7 +7,6 @@ allowed-tools:
   - Task
 argument-hint: "[--step-by-step] [--auto-pause] [--verbose]"
 description: "Modalità interattiva con esecuzione step-by-step e controllo utente"
-model: sonnet
 ---
 
 # Toduba Interactive Mode - Esecuzione Interattiva 🎮

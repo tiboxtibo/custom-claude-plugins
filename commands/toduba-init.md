@@ -7,7 +7,6 @@ allowed-tools:
   - Grep
 argument-hint: "[--force] [--verbose]"
 description: "Analizza il progetto e genera documentazione completa in /docs"
-model: sonnet
 ---
 
 # Toduba Init - Generazione Documentazione Progetto 📚

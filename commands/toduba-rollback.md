@@ -7,7 +7,6 @@ allowed-tools:
   - Grep
 argument-hint: "[--last] [--steps <n>] [--to <commit>] [--dry-run] [--force]"
 description: "Sistema di rollback con snapshot automatici per annullare modifiche"
-model: sonnet
 ---
 
 # Toduba Rollback - Sistema di Rollback Intelligente ↩️

@@ -7,7 +7,6 @@ allowed-tools:
   - Task
 argument-hint: "[--watch] [--coverage] [--only <pattern>] [--fail-fast]"
 description: "Esegue test suite completa con report coverage e watch mode"
-model: sonnet
 ---
 
 # Toduba Test - Esecuzione Test Suite 🧪

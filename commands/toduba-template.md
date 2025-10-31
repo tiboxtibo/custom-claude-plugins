@@ -7,7 +7,6 @@ allowed-tools:
   - Task
 argument-hint: "[template-name] [--list] [--variables key=value]"
 description: "Sistema di template per workflow comuni e scaffolding rapido"
-model: sonnet
 ---
 
 # Toduba Template - Template Workflows System 📝

@@ -5,7 +5,6 @@ allowed-tools:
   - Grep
 argument-hint: "[command|agent] [--examples] [--verbose]"
 description: "Sistema di help integrato con esempi e documentazione contestuale"
-model: sonnet
 ---
 
 # Toduba Help - Sistema Help Integrato 📖

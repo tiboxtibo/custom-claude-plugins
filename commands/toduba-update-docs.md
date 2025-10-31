@@ -8,7 +8,6 @@ allowed-tools:
   - Grep
 argument-hint: "[--check] [--full] [--smart] [--format md|html|json|pdf]"
 description: "Smart incremental updates con cache e multiple export formats"
-model: sonnet
 ---
 
 # Toduba Update Docs - Smart Incremental Updates 🔄

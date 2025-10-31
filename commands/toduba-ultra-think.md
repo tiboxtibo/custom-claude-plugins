@@ -8,7 +8,6 @@ allowed-tools:
   - Task
 argument-hint: "[problema o domanda da analizzare]"
 description: "Modalità di analisi profonda per problemi complessi"
-model: sonnet
 ---
 
 # Toduba Ultra Think - Analisi Profonda e Problem Solving 🧠

@@ -7,7 +7,6 @@ allowed-tools:
   - Task
 argument-hint: "[file-or-directory] [--strict]"
 description: "Esegue code review approfondita del codice"
-model: sonnet
 ---
 
 # Toduba Code Review - Analisi e Review del Codice 🔍
