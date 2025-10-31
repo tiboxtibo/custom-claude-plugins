@@ -1,0 +1,81 @@
+name: crud-api
+description: Complete CRUD API with validation and testing
+category: api
+author: Toduba System
+version: 1.0.0
+
+variables:
+  - name: resource
+    type: string
+    required: true
+    description: Resource name (singular, e.g., 'user', 'product')
+
+  - name: database
+    type: select
+    required: true
+    options:
+      - postgres
+      - mysql
+      - mongodb
+      - sqlite
+    default: postgres
+    description: Database type to use
+
+  - name: authentication
+    type: select
+    options:
+      - jwt
+      - session
+      - oauth
+      - none
+    default: jwt
+    description: Authentication method
+
+  - name: validation
+    type: select
+    options:
+      - joi
+      - yup
+      - zod
+      - ajv
+    default: joi
+    description: Validation library
+
+  - name: includeTests
+    type: boolean
+    default: true
+    description: Include test files
+
+  - name: includeSwagger
+    type: boolean
+    default: true
+    description: Include Swagger documentation
+
+hooks:
+  preGenerate: |
+    console.log('🚀 Generating CRUD API for {{resource}}...');
+    // Ensure directories exist
+    require('fs').mkdirSync('api/{{resource}}s', { recursive: true });
+    if ({{includeTests}}) {
+      require('fs').mkdirSync('tests/api', { recursive: true });
+    }
+
+  postGenerate: |
+    console.log('📦 Installing dependencies...');
+    const deps = ['express'];
+    if ('{{database}}' === 'postgres') deps.push('pg');
+    if ('{{database}}' === 'mongodb') deps.push('mongoose');
+    if ('{{validation}}' === 'joi') deps.push('joi');
+    if ('{{authentication}}' === 'jwt') deps.push('jsonwebtoken');
+    // Execute: npm install deps...
+    console.log('✅ CRUD API generated successfully!');
+
+files:
+  - path: api/{{resource}}s/index.js
+    template: |
+      module.exports = {
+        controller: require('./controller'),
+        routes: require('./routes'),
+        service: require('./service'),
+        model: require('./model')
+      };

@@ -1,28 +1,30 @@
 {
-  "name": "custom-plugin-marketplace",
+  "name": "toduba-plugin-system",
   "owner": {
     "name": "Matteo Tiboldo",
     "email": "mtiboldo@toduba.it"
   },
   "metadata": {
-    "description": "Generic plugin marketplace template for Claude Code with customizable multi-agent system",
-    "version": "1.0.0",
-    "repository": "",
+    "description": "Toduba Plugin System v2.0 - Orchestrazione intelligente con 8 agenti, 10 comandi avanzati, interactive mode, smart updates, template system e pre-commit hooks",
+    "version": "2.0.0",
+    "repository": "https://github.com/tiboxtibo/custom-claude-plugins",
     "license": "MIT"
   },
   "config": {
     "workspaceRoot": "workspace",
-    "mcpServerName": "YourPlatform",
-    "enableJournaling": true,
-    "enableWorkPackages": true
+    "mcpServerName": "Toduba",
+    "enableJournaling": false,
+    "enableWorkPackages": true,
+    "documentationRoot": "docs",
+    "enableAutoDocUpdate": true
   },
   "plugins": [
     {
-      "name": "multi-agent-system",
-      "description": "Multi-agent collaboration system with 12 specialized agents, 3 composable skills (context gathering, TDD workflow, code review), and 24 workflow commands. Atlas coordinates all agents for comprehensive development workflow.",
+      "name": "toduba-system",
+      "description": "Sistema Toduba v2.0 con orchestratore ultra-think (quick/standard/deep modes), 8 agenti specializzati (backend, frontend, mobile, QA, test, analyzer, documentation), 10 comandi avanzati (init, update-docs, commit, code-review, ultra-think, test, rollback, help, interactive, template). Features: smart incremental updates, cache system, multiple export formats (MD/HTML/JSON/PDF), pre-commit hooks, snapshot & rollback, interactive step-by-step execution, template scaffolding. Documentazione automatica in /docs.",
       "source": "./",
       "strict": false,
-      "skills": ["./context-gather", "./tdd-workflow", "./code-review"]
+      "skills": []
     }
   ]
 }
