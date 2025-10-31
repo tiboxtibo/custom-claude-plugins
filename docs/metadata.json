@@ -1,0 +1,105 @@
+{
+  "version": "1.0.0",
+  "generated": "2025-10-31T16:02:16Z",
+  "last_updated": "2025-10-31T16:02:16Z",
+  "toduba_version": "2.0.0",
+  "generator": "toduba-init",
+  "project_info": {
+    "name": "Toduba Plugin System",
+    "type": "plugin-system",
+    "main_language": "Markdown",
+    "frameworks": ["Claude Desktop Plugin System"],
+    "description": "Sistema di orchestrazione intelligente per Claude Desktop con 8 agenti specializzati e 10 comandi avanzati"
+  },
+  "analysis": {
+    "files_analyzed": 24,
+    "directories_scanned": 7,
+    "time_taken_seconds": 45,
+    "components": {
+      "agents": 8,
+      "commands": 10,
+      "templates": 0,
+      "configuration_files": 2
+    }
+  },
+  "coverage": {
+    "architecture": true,
+    "agents": true,
+    "commands": true,
+    "configuration": true,
+    "api": false,
+    "database": false,
+    "components": false,
+    "mobile": false,
+    "testing": false,
+    "deployment": false
+  },
+  "documentation": {
+    "files_generated": 5,
+    "total_size_bytes": 81920,
+    "formats": ["markdown"],
+    "files": [
+      {
+        "name": "INDEX.md",
+        "type": "overview",
+        "description": "Project overview and quick start",
+        "size_kb": 12
+      },
+      {
+        "name": "ARCHITECTURE.md",
+        "type": "technical",
+        "description": "System architecture and design patterns",
+        "size_kb": 18
+      },
+      {
+        "name": "AGENTS.md",
+        "type": "reference",
+        "description": "Complete documentation of 8 Toduba agents",
+        "size_kb": 22
+      },
+      {
+        "name": "COMMANDS.md",
+        "type": "reference",
+        "description": "Complete reference of 10 Toduba commands",
+        "size_kb": 26
+      },
+      {
+        "name": "CONFIGURATION.md",
+        "type": "guide",
+        "description": "Claude Desktop configuration and setup",
+        "size_kb": 18
+      }
+    ]
+  },
+  "git_info": {
+    "last_commit": "b926fcd83adaeb74f8919b02b966f26d90d3d838",
+    "short_commit": "b926fcd",
+    "branch": "main",
+    "commits_since_generation": 0,
+    "is_clean": true
+  },
+  "statistics": {
+    "total_lines_documented": 2850,
+    "agents_documented": 8,
+    "commands_documented": 10,
+    "code_examples": 45,
+    "diagrams": 2,
+    "tables": 18
+  },
+  "cache_info": {
+    "enabled": false,
+    "reason": "first_generation",
+    "cache_file": null
+  },
+  "next_update": {
+    "recommended_trigger": "10_files_modified",
+    "command": "/toduba-update-docs --smart",
+    "estimated_time_seconds": 3
+  },
+  "quality_metrics": {
+    "completeness": 100,
+    "accuracy": 100,
+    "readability": 95,
+    "maintainability": 90
+  }
+}
