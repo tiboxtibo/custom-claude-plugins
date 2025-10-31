@@ -7,15 +7,17 @@ allowed-tools:
   - Task
 argument-hint: "[template-name] [--list] [--variables key=value]"
 description: "Sistema di template per workflow comuni e scaffolding rapido"
-model: haiku
+model: sonnet
 ---
 
 # Toduba Template - Template Workflows System 📝
 
 ## Obiettivo
+
 Fornire template predefiniti per workflow comuni, permettendo scaffolding rapido e consistente di componenti, API, e applicazioni complete.
 
 ## Argomenti
+
 - `[template-name]`: Nome del template da usare
 - `--list`: Lista tutti i template disponibili
 - `--variables`: Variabili per il template (key=value)
@@ -30,7 +32,7 @@ Argomenti ricevuti: $ARGUMENTS
 interface Template {
   name: string;
   description: string;
-  category: 'api' | 'component' | 'app' | 'test' | 'config';
+  category: "api" | "component" | "app" | "test" | "config";
   variables: Variable[];
   files: FileTemplate[];
   hooks?: {
@@ -42,7 +44,7 @@ interface Template {
 interface Variable {
   name: string;
   description: string;
-  type: 'string' | 'boolean' | 'select';
+  type: "string" | "boolean" | "select";
   default?: any;
   required: boolean;
   options?: string[];
@@ -104,11 +106,13 @@ env-setup         Environment setup
 ## Template Usage Flow
 
 ### Step 1: Select Template
+
 ```bash
 /toduba-template crud-api --variables resource=product
 ```
 
 ### Step 2: Variable Input
+
 ```
 🎯 Template: crud-api
 ━━━━━━━━━━━━━━━━━━━━━━
@@ -126,6 +130,7 @@ Optional variables:
 ```
 
 ### Step 3: Preview Generation
+
 ```
 📋 Files to be created:
 ━━━━━━━━━━━━━━━━━━━━━━━
@@ -144,6 +149,7 @@ Continue? [Y/n]:
 ## Template Definitions
 
 ### CRUD API Template
+
 ```yaml
 name: crud-api
 description: Complete CRUD API with all operations
@@ -292,6 +298,7 @@ files:
 ```
 
 ### React Component Template
+
 ```yaml
 name: react-component
 description: React functional component with hooks
@@ -400,6 +407,7 @@ files:
 ```
 
 ### Full-Stack App Template
+
 ```yaml
 name: fullstack-app
 description: Complete full-stack application setup

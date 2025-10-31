@@ -8,15 +8,17 @@ allowed-tools:
   - Grep
 argument-hint: "[--check] [--full] [--smart] [--format md|html|json|pdf]"
 description: "Smart incremental updates con cache e multiple export formats"
-model: haiku
+model: sonnet
 ---
 
 # Toduba Update Docs - Smart Incremental Updates 🔄
 
 ## Obiettivo
+
 Aggiornamento intelligente con cache, change detection avanzata e supporto per multiple export formats.
 
 ## Argomenti
+
 - `--check`: Mostra cosa verrebbe aggiornato senza modificare
 - `--full`: Forza rigenerazione completa (equivalente a toduba-init --force)
 - `--smart`: Abilita cache e ottimizzazioni AI (default: on)
@@ -25,6 +27,7 @@ Aggiornamento intelligente con cache, change detection avanzata e supporto per m
 Argomenti ricevuti: $ARGUMENTS
 
 ## Pre-requisiti
+
 ```bash
 # Verifica che /docs esista
 if [ ! -d "docs" ]; then
@@ -45,14 +48,16 @@ fi
 ### Fase 1: Analisi Cambiamenti
 
 #### 1.1 Lettura Stato Precedente
+
 ```javascript
 // Leggi metadata.json
-const metadata = JSON.parse(readFile('docs/metadata.json'));
+const metadata = JSON.parse(readFile("docs/metadata.json"));
 const lastCommit = metadata.git_info.last_commit;
 const lastUpdate = metadata.last_updated;
 ```
 
 #### 1.2 Calcolo Differenze
+
 ```bash
 # Commits dal'ultimo update
 COMMITS_COUNT=$(git rev-list --count ${LAST_COMMIT}..HEAD)
@@ -79,6 +84,7 @@ done
 ### Fase 2: Decisione Aggiornamento
 
 #### Matrice di Update:
+
 ```
 Cambiamenti rilevati → Documenti da aggiornare
 ─────────────────────────────────────────────
@@ -93,6 +99,7 @@ Any changes         → INDEX.md, metadata.json
 ```
 
 #### Soglie per Update:
+
 - **Minor** (< 5 file): Aggiorna solo file specifici
 - **Medium** (5-20 file): Aggiorna categoria + INDEX
 - **Major** (> 20 file): Considera update completo
@@ -101,13 +108,14 @@ Any changes         → INDEX.md, metadata.json
 ### Fase 3: Update Incrementale
 
 #### 3.1 Per API_ENDPOINTS.md:
+
 ```javascript
 // Analizza solo endpoint modificati
-const modifiedControllers = getModifiedFiles('controllers');
-const modifiedRoutes = getModifiedFiles('routes');
+const modifiedControllers = getModifiedFiles("controllers");
+const modifiedRoutes = getModifiedFiles("routes");
 
 // Estrai endpoint esistenti
-const existingEndpoints = parseExistingEndpoints('API_ENDPOINTS.md');
+const existingEndpoints = parseExistingEndpoints("API_ENDPOINTS.md");
 
 // Analizza nuovi/modificati
 const updatedEndpoints = analyzeEndpoints(modifiedControllers, modifiedRoutes);
@@ -116,49 +124,61 @@ const updatedEndpoints = analyzeEndpoints(modifiedControllers, modifiedRoutes);
 const mergedEndpoints = mergeEndpoints(existingEndpoints, updatedEndpoints);
 
 // Rigenera solo sezioni cambiate
-updateSections('API_ENDPOINTS.md', mergedEndpoints);
+updateSections("API_ENDPOINTS.md", mergedEndpoints);
 ```
 
 #### 3.2 Per COMPONENTS.md:
+
 ```javascript
 // Simile approccio per componenti UI
-const modifiedComponents = getModifiedFiles(['components', 'pages']);
+const modifiedComponents = getModifiedFiles(["components", "pages"]);
 
 // Aggiorna solo componenti modificati
 for (const component of modifiedComponents) {
   const componentDoc = generateComponentDoc(component);
-  replaceSection('COMPONENTS.md', component.name, componentDoc);
+  replaceSection("COMPONENTS.md", component.name, componentDoc);
 }
 ```
 
 #### 3.3 Per DATABASE_SCHEMA.md:
+
 ```javascript
 // Rileva modifiche schema
 const schemaChanges = detectSchemaChanges();
 
 if (schemaChanges.migrations) {
-  appendSection('DATABASE_SCHEMA.md', '## Migrazioni Recenti', schemaChanges.migrations);
+  appendSection(
+    "DATABASE_SCHEMA.md",
+    "## Migrazioni Recenti",
+    schemaChanges.migrations
+  );
 }
 
 if (schemaChanges.newModels) {
-  updateModelsSection('DATABASE_SCHEMA.md', schemaChanges.newModels);
+  updateModelsSection("DATABASE_SCHEMA.md", schemaChanges.newModels);
 }
 ```
 
 ### Fase 4: Smart Merge Strategy
 
 #### Preservazione Contenuto Custom:
+
 ```markdown
 <!-- TODUBA:START:AUTO -->
+
 [Contenuto generato automaticamente]
+
 <!-- TODUBA:END:AUTO -->
 
 <!-- TODUBA:CUSTOM:START -->
+
 [Contenuto custom preservato durante update]
+
 <!-- TODUBA:CUSTOM:END -->
 ```
 
 #### Conflict Resolution:
+
 1. Preserva sempre sezioni custom
 2. Se conflitto in auto-generated:
    - Backup versione vecchia
@@ -168,6 +188,7 @@ if (schemaChanges.newModels) {
 ### Fase 5: Validazione e Report
 
 #### Se `--check`:
+
 ```
 🔍 Toduba Update Docs - Analisi Cambiamenti
 
@@ -190,6 +211,7 @@ Esegui senza --check per applicare gli aggiornamenti.
 ```
 
 #### Update Effettivo:
+
 ```
 🔄 Toduba Update Docs - Aggiornamento in Corso...
 
@@ -222,6 +244,7 @@ Esegui senza --check per applicare gli aggiornamenti.
 ### Fase 6: Auto-Invocazione da Orchestrator
 
 Quando chiamato automaticamente:
+
 1. Sempre modalità silenziosa (no verbose)
 2. Log minimo solo se errori
 3. Return status code per orchestrator
@@ -238,6 +261,7 @@ Quando chiamato automaticamente:
 ## Smart Incremental Updates (H1)
 
 ### Cache System
+
 ```typescript
 class DocumentationCache {
   private cache = new Map();
@@ -255,7 +279,7 @@ class DocumentationCache {
     this.cache.set(filePath, {
       analysis,
       timestamp: Date.now(),
-      hash: this.calculateHash(filePath)
+      hash: this.calculateHash(filePath),
     });
   }
 
@@ -270,6 +294,7 @@ class DocumentationCache {
 ```
 
 ### Smart Change Detection
+
 ```javascript
 // Usa git diff con analisi semantica
 const detectSmartChanges = async () => {
@@ -278,11 +303,11 @@ const detectSmartChanges = async () => {
     feature: [],
     bugfix: [],
     refactor: [],
-    documentation: []
+    documentation: [],
   };
 
   // Analizza AST per determinare tipo di cambiamento
-  const diff = await git.diff('--cached', '--name-status');
+  const diff = await git.diff("--cached", "--name-status");
 
   for (const file of diff) {
     const analysis = await analyzeFileChange(file);
@@ -300,6 +325,7 @@ const detectSmartChanges = async () => {
 ```
 
 ### Dependency Graph Updates
+
 ```typescript
 // Aggiorna solo documenti dipendenti
 const updateDependentDocs = async (changedFile: string) => {
@@ -316,6 +342,7 @@ const updateDependentDocs = async (changedFile: string) => {
 ## Multiple Export Formats (H2)
 
 ### Format Converters
+
 ```typescript
 interface FormatConverter {
   convert(markdown: string, options?: any): string | Buffer;
@@ -337,22 +364,26 @@ const converters: Record<string, FormatConverter> = {
 <body>${html}</body>
 </html>`;
     },
-    extension: '.html',
-    mimeType: 'text/html'
+    extension: ".html",
+    mimeType: "text/html",
   },
 
   json: {
     convert: (md) => {
       const sections = parseMarkdownToSections(md);
-      return JSON.stringify({
-        version: '2.0.0',
-        generated: new Date().toISOString(),
-        sections,
-        metadata: getMetadata()
-      }, null, 2);
+      return JSON.stringify(
+        {
+          version: "2.0.0",
+          generated: new Date().toISOString(),
+          sections,
+          metadata: getMetadata(),
+        },
+        null,
+        2
+      );
     },
-    extension: '.json',
-    mimeType: 'application/json'
+    extension: ".json",
+    mimeType: "application/json",
   },
 
   pdf: {
@@ -361,15 +392,16 @@ const converters: Record<string, FormatConverter> = {
       const html = marked.parse(md);
       return await generatePDF(html);
     },
-    extension: '.pdf',
-    mimeType: 'application/pdf'
-  }
+    extension: ".pdf",
+    mimeType: "application/pdf",
+  },
 };
 ```
 
 ### Export Pipeline
+
 ```javascript
-const exportDocumentation = async (format: string = 'md') => {
+const exportDocumentation = async (format: string = "md") => {
   const converter = converters[format];
   if (!converter) throw new Error(`Format ${format} not supported`);
 
@@ -378,11 +410,11 @@ const exportDocumentation = async (format: string = 'md') => {
   await fs.mkdir(outputDir, { recursive: true });
 
   // Converti tutti i documenti
-  for (const file of await glob('docs/*.md')) {
-    const content = await fs.readFile(file, 'utf8');
+  for (const file of await glob("docs/*.md")) {
+    const content = await fs.readFile(file, "utf8");
     const converted = await converter.convert(content);
 
-    const outputName = path.basename(file, '.md') + converter.extension;
+    const outputName = path.basename(file, ".md") + converter.extension;
     await fs.writeFile(`${outputDir}/${outputName}`, converted);
   }
 
@@ -391,6 +423,7 @@ const exportDocumentation = async (format: string = 'md') => {
 ```
 
 ### Format-Specific Templates
+
 ```typescript
 // Templates per diversi formati
 const templates = {
@@ -404,15 +437,15 @@ const templates = {
       .sidebar { position: fixed; left: 0; width: 250px; }
       .content { margin-left: 270px; }
       .code-block { background: #f4f4f4; padding: 1rem; }
-    `
+    `,
   },
 
   pdf: {
-    pageSize: 'A4',
-    margins: { top: '2cm', bottom: '2cm', left: '2cm', right: '2cm' },
-    header: '🤖 Toduba Documentation',
-    footer: 'Page {page} of {pages}'
-  }
+    pageSize: "A4",
+    margins: { top: "2cm", bottom: "2cm", left: "2cm", right: "2cm" },
+    header: "🤖 Toduba Documentation",
+    footer: "Page {page} of {pages}",
+  },
 };
 ```
 
@@ -439,13 +472,15 @@ const templates = {
 ## Integrazione con Orchestrator
 
 L'orchestrator invoca automaticamente quando:
+
 ```javascript
 if (modifiedFiles > 10 || majorRefactoring || newModules) {
-  await invokeCommand('toduba-update-docs --smart');
+  await invokeCommand("toduba-update-docs --smart");
 }
 ```
 
 Non viene invocato per:
+
 - Modifiche a singoli file
 - Fix di typo/commenti
 - Modifiche solo a test

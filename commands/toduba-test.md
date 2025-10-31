@@ -7,15 +7,17 @@ allowed-tools:
   - Task
 argument-hint: "[--watch] [--coverage] [--only <pattern>] [--fail-fast]"
 description: "Esegue test suite completa con report coverage e watch mode"
-model: haiku
+model: sonnet
 ---
 
 # Toduba Test - Esecuzione Test Suite 🧪
 
 ## Obiettivo
+
 Eseguire test suite completa del progetto con supporto per watch mode, coverage reporting e filtering.
 
 ## Argomenti
+
 - `--watch`: Modalità watch per sviluppo continuo
 - `--coverage`: Genera report coverage dettagliato
 - `--only <pattern>`: Esegue solo test che matchano pattern
@@ -26,6 +28,7 @@ Eseguire test suite completa del progetto con supporto per watch mode, coverage 
 Argomenti ricevuti: $ARGUMENTS
 
 ## Progress Tracking
+
 ```
 🧪 Test Execution Progress
 [████████░░░░░░░░] 53% - Running integration tests (27/51)
@@ -182,19 +185,19 @@ show_progress() {
 ```javascript
 // Se --watch è attivo
 if (WATCH_MODE) {
-  console.log('👁️ Watch mode activated - Tests will re-run on file changes');
+  console.log("👁️ Watch mode activated - Tests will re-run on file changes");
 
-  const chokidar = require('chokidar');
+  const chokidar = require("chokidar");
 
-  const watcher = chokidar.watch(['src/**/*.js', 'test/**/*.js'], {
+  const watcher = chokidar.watch(["src/**/*.js", "test/**/*.js"], {
     ignored: /node_modules/,
-    persistent: true
+    persistent: true,
   });
 
-  watcher.on('change', async (path) => {
+  watcher.on("change", async (path) => {
     console.clear();
     console.log(`📝 File changed: ${path}`);
-    console.log('🔄 Re-running tests...\n');
+    console.log("🔄 Re-running tests...\n");
 
     // Re-run only affected tests
     const affectedTests = findAffectedTests(path);
@@ -273,15 +276,18 @@ show_coverage_bar() {
 **Mode**: [watch/single]
 
 ### Test Suites
-| Type | Passed | Failed | Skipped | Time |
-|------|--------|--------|---------|------|
-| Unit | 245 | 0 | 2 | 12s |
-| Integration | 48 | 2 | 0 | 45s |
-| E2E | 12 | 0 | 0 | 1m 37s |
-| **Total** | **305** | **2** | **2** | **2m 34s** |
+
+| Type        | Passed  | Failed | Skipped | Time       |
+| ----------- | ------- | ------ | ------- | ---------- |
+| Unit        | 245     | 0      | 2       | 12s        |
+| Integration | 48      | 2      | 0       | 45s        |
+| E2E         | 12      | 0      | 0       | 1m 37s     |
+| **Total**   | **305** | **2**  | **2**   | **2m 34s** |
 
 ### Failed Tests ❌
+
 1. `integration/api/user.test.js`
+
    - Test: "should handle concurrent updates"
    - Error: Timeout after 5000ms
    - Line: 145
@@ -293,14 +299,16 @@ show_coverage_bar() {
 
 ### Coverage Report 📊
 ```
-File            | % Stmts | % Branch | % Funcs | % Lines |
-----------------|---------|----------|---------|---------|
-All files       |   87.3  |    82.1  |   90.5  |   87.2  |
- src/           |   89.2  |    85.3  |   92.1  |   89.1  |
-  api/          |   91.5  |    88.2  |   94.3  |   91.4  |
-  components/   |   86.7  |    81.9  |   89.8  |   86.6  |
-  services/     |   88.4  |    83.7  |   91.2  |   88.3  |
- utils/         |   92.8  |    90.1  |   95.6  |   92.7  |
+
+| File        | % Stmts | % Branch | % Funcs | % Lines |
+| ----------- | ------- | -------- | ------- | ------- |
+| All files   | 87.3    | 82.1     | 90.5    | 87.2    |
+| src/        | 89.2    | 85.3     | 92.1    | 89.1    |
+| api/        | 91.5    | 88.2     | 94.3    | 91.4    |
+| components/ | 86.7    | 81.9     | 89.8    | 86.6    |
+| services/   | 88.4    | 83.7     | 91.2    | 88.3    |
+| utils/      | 92.8    | 90.1     | 95.6    | 92.7    |
+
 ```
 
 ### Performance Metrics ⚡
@@ -339,6 +347,7 @@ jobs:
 ## Output Examples
 
 ### Success Output
+
 ```
 🧪 Toduba Test Suite
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -352,6 +361,7 @@ Run with --watch for continuous testing
 ```
 
 ### Failure Output
+
 ```
 🧪 Toduba Test Suite
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -367,6 +377,7 @@ See details above. Fix and run: /toduba-test --only failed
 ## Advanced Features
 
 ### Parallel Execution
+
 ```bash
 if [ "$PARALLEL" = true ]; then
   echo "⚡ Running tests in parallel..."
@@ -375,6 +386,7 @@ fi
 ```
 
 ### Test Filtering
+
 ```bash
 if [ -n "$PATTERN" ]; then
   echo "🔍 Running only tests matching: $PATTERN"
@@ -383,6 +395,7 @@ fi
 ```
 
 ### Fail Fast
+
 ```bash
 if [ "$FAIL_FAST" = true ]; then
   echo "⚠️ Fail-fast mode: Will stop at first failure"

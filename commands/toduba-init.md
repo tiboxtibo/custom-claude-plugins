@@ -7,15 +7,17 @@ allowed-tools:
   - Grep
 argument-hint: "[--force] [--verbose]"
 description: "Analizza il progetto e genera documentazione completa in /docs"
-model: haiku
+model: sonnet
 ---
 
 # Toduba Init - Generazione Documentazione Progetto 📚
 
 ## Obiettivo
+
 Analizzare l'intero progetto e generare una documentazione completa nella cartella `/docs`. Se la documentazione esiste già, aggiorna solo le parti modificate.
 
 ## Argomenti
+
 - `--force`: Rigenera completamente la documentazione anche se esiste
 - `--verbose`: Output dettagliato durante la generazione
 
@@ -24,6 +26,7 @@ Argomenti ricevuti: $ARGUMENTS
 ## Processo di Analisi e Generazione
 
 ### Fase 1: Verifica Stato Attuale
+
 ```bash
 # Controlla se /docs esiste
 if [ -d "docs" ]; then
@@ -36,7 +39,9 @@ fi
 ### Fase 2: Analisi del Progetto
 
 #### 2.1 Identificazione Tipo Progetto
+
 Cerca indicatori chiave:
+
 - `package.json` → Node.js/JavaScript/TypeScript
 - `pubspec.yaml` → Flutter/Dart
 - `pom.xml` / `build.gradle` → Java
@@ -46,6 +51,7 @@ Cerca indicatori chiave:
 - `.csproj` → C#/.NET
 
 #### 2.2 Struttura del Progetto
+
 ```bash
 # Genera albero delle directory (escludendo node_modules, .git, etc.)
 tree -I 'node_modules|.git|dist|build|coverage' -d -L 3
@@ -59,6 +65,7 @@ find . -type f -name "*.ts" | wc -l
 #### 2.3 Analisi Componenti
 
 **Frontend (se presente):**
+
 - Framework utilizzato (React, Vue, Angular, Flutter)
 - Componenti principali
 - Routing structure
@@ -66,6 +73,7 @@ find . -type f -name "*.ts" | wc -l
 - Stili e temi
 
 **Backend (se presente):**
+
 - Framework (Express, FastAPI, Spring, etc.)
 - API endpoints
 - Middleware
@@ -73,6 +81,7 @@ find . -type f -name "*.ts" | wc -l
 - Authentication
 
 **Database (se presente):**
+
 - Tipo (SQL, NoSQL)
 - Schema/Modelli
 - Migrazioni
@@ -98,36 +107,43 @@ docs/
 ```
 
 #### Template INDEX.md:
+
 ```markdown
 # [Nome Progetto] - Documentazione
 
 Generato da Toduba System il [DATA]
 
 ## 📋 Overview
+
 [Descrizione breve del progetto]
 
 ## 🏗️ Architettura
+
 - **Tipo**: [Monolitico/Microservizi/Serverless]
 - **Stack**: [Tecnologie principali]
 - **Pattern**: [MVC/MVVM/Clean Architecture]
 
 ## 📁 Struttura Progetto
+
 \`\`\`
 [Tree output semplificato]
 \`\`\`
 
 ## 🚀 Quick Start
+
 1. [Passi installazione]
 2. [Configurazione]
 3. [Avvio]
 
 ## 📊 Statistiche Codebase
+
 - **Linguaggi**: [Lista con percentuali]
 - **File totali**: [Numero]
 - **Linee di codice**: [Numero approssimativo]
 - **Test coverage**: [Se disponibile]
 
 ## 🔗 Collegamenti Rapidi
+
 - [Architettura](./ARCHITECTURE.md)
 - [API](./API_ENDPOINTS.md)
 - [Database](./DATABASE_SCHEMA.md)
@@ -135,6 +151,7 @@ Generato da Toduba System il [DATA]
 ```
 
 #### Template metadata.json:
+
 ```json
 {
   "version": "1.0.0",
@@ -174,6 +191,7 @@ Se la documentazione esiste e non viene usato `--force`:
 
 1. **Leggi metadata.json esistente**
 2. **Calcola differenze:**
+
    ```bash
    # Commits dal'ultima generazione
    git log --oneline [LAST_COMMIT]..HEAD
@@ -224,7 +242,7 @@ Se la documentazione esiste e non viene usato `--force`:
 
 ## Note Implementazione
 
-- Usa `haiku` model per velocità (analisi può essere estesa)
+- Usa `sonnet` model per velocità (analisi può essere estesa)
 - Parallel processing dove possibile (analisi multi-file)
 - Cache risultati intermedi in memoria
 - Sanitizza output per evitare leak di secrets

@@ -5,15 +5,17 @@ allowed-tools:
   - Grep
 argument-hint: "[command|agent] [--examples] [--verbose]"
 description: "Sistema di help integrato con esempi e documentazione contestuale"
-model: haiku
+model: sonnet
 ---
 
 # Toduba Help - Sistema Help Integrato 📖
 
 ## Obiettivo
+
 Fornire help contestuale, esempi pratici e documentazione per tutti i componenti del sistema Toduba.
 
 ## Argomenti
+
 - `[command|agent]`: Nome specifico comando o agente
 - `--examples`: Mostra esempi pratici
 - `--verbose`: Documentazione dettagliata
@@ -51,6 +53,7 @@ Argomenti ricevuti: $ARGUMENTS
 ## Help System Implementation
 
 ### Dynamic Help Generation
+
 ```javascript
 const generateHelp = (component) => {
   if (!component) {
@@ -58,12 +61,12 @@ const generateHelp = (component) => {
   }
 
   // Check if it's a command
-  if (component.startsWith('/') || component.startsWith('toduba-')) {
+  if (component.startsWith("/") || component.startsWith("toduba-")) {
     return showCommandHelp(component);
   }
 
   // Check if it's an agent
-  if (component.includes('engineer') || component.includes('orchestrator')) {
+  if (component.includes("engineer") || component.includes("orchestrator")) {
     return showAgentHelp(component);
   }
 
@@ -114,6 +117,7 @@ Type: /toduba-help <component> --examples for practical examples
 ## Component-Specific Help
 
 ### Command Help Template
+
 ```markdown
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📘 COMMAND: /toduba-[name]
@@ -126,20 +130,20 @@ Type: /toduba-help <component> --examples for practical examples
 /toduba-[name] [required] [--optional] [--flags]
 
 🎯 ARGUMENTS
-• required    Description of required argument
-• --optional  Description of optional flag
-• --flag      Description of boolean flag
+• required Description of required argument
+• --optional Description of optional flag
+• --flag Description of boolean flag
 
 📊 EXAMPLES
 
 Basic usage:
-  /toduba-[name]
+/toduba-[name]
 
 With options:
-  /toduba-[name] --verbose --coverage
+/toduba-[name] --verbose --coverage
 
 Advanced:
-  /toduba-[name] pattern --only tests --parallel
+/toduba-[name] pattern --only tests --parallel
 
 💡 TIPS
 • [Useful tip 1]
@@ -155,6 +159,7 @@ See: commands/toduba-[name].md
 ```
 
 ### Agent Help Template
+
 ```markdown
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🤖 AGENT: toduba-[name]
@@ -174,18 +179,19 @@ See: commands/toduba-[name].md
 • [Other tools]
 
 🔄 WORKFLOW
+
 1. [Step 1 in typical workflow]
 2. [Step 2]
 3. [Step 3]
 
 📊 WHEN TO USE
 ✅ Use for:
-  • [Scenario 1]
-  • [Scenario 2]
+• [Scenario 1]
+• [Scenario 2]
 
 ❌ Don't use for:
-  • [Anti-pattern 1]
-  • [Anti-pattern 2]
+• [Anti-pattern 1]
+• [Anti-pattern 2]
 
 💡 BEST PRACTICES
 • [Best practice 1]
@@ -202,6 +208,7 @@ See: agents/toduba-[name].md
 ## Examples System
 
 ### Show Examples for Commands
+
 ```bash
 show_command_examples() {
   case "$1" in
@@ -277,6 +284,7 @@ EOF
 ```
 
 ### Show Examples for Agents
+
 ```bash
 show_agent_examples() {
   case "$1" in
@@ -332,43 +340,43 @@ EOF
 ```javascript
 const searchDocumentation = (term) => {
   console.log(`🔍 Searching for: "${term}"`);
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
   const results = [];
 
   // Search in commands
-  const commandFiles = glob.sync('commands/toduba-*.md');
-  commandFiles.forEach(file => {
-    const content = fs.readFileSync(file, 'utf8');
+  const commandFiles = glob.sync("commands/toduba-*.md");
+  commandFiles.forEach((file) => {
+    const content = fs.readFileSync(file, "utf8");
     if (content.toLowerCase().includes(term.toLowerCase())) {
-      const lines = content.split('\n');
-      const matches = lines.filter(line =>
+      const lines = content.split("\n");
+      const matches = lines.filter((line) =>
         line.toLowerCase().includes(term.toLowerCase())
       );
       results.push({
-        type: 'command',
-        file: path.basename(file, '.md'),
-        matches: matches.slice(0, 3)
+        type: "command",
+        file: path.basename(file, ".md"),
+        matches: matches.slice(0, 3),
       });
     }
   });
 
   // Search in agents
-  const agentFiles = glob.sync('agents/toduba-*.md');
-  agentFiles.forEach(file => {
-    const content = fs.readFileSync(file, 'utf8');
+  const agentFiles = glob.sync("agents/toduba-*.md");
+  agentFiles.forEach((file) => {
+    const content = fs.readFileSync(file, "utf8");
     if (content.toLowerCase().includes(term.toLowerCase())) {
       results.push({
-        type: 'agent',
-        file: path.basename(file, '.md'),
-        context: extractContext(content, term)
+        type: "agent",
+        file: path.basename(file, ".md"),
+        context: extractContext(content, term),
       });
     }
   });
 
   // Display results
   if (results.length === 0) {
-    console.log('No results found. Try different terms.');
+    console.log("No results found. Try different terms.");
   } else {
     console.log(`Found ${results.length} matches:\n`);
     results.forEach(displaySearchResult);
@@ -382,19 +390,19 @@ const searchDocumentation = (term) => {
 // When no arguments provided
 if (!ARGUMENTS) {
   // Show interactive menu
-  console.log('🎯 TODUBA HELP - Interactive Mode');
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('');
-  console.log('What would you like help with?');
-  console.log('');
-  console.log('1. Commands overview');
-  console.log('2. Agents overview');
-  console.log('3. Quick start guide');
-  console.log('4. Common workflows');
-  console.log('5. Troubleshooting');
-  console.log('6. Search documentation');
-  console.log('');
-  console.log('Enter number or type component name:');
+  console.log("🎯 TODUBA HELP - Interactive Mode");
+  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+  console.log("");
+  console.log("What would you like help with?");
+  console.log("");
+  console.log("1. Commands overview");
+  console.log("2. Agents overview");
+  console.log("3. Quick start guide");
+  console.log("4. Common workflows");
+  console.log("5. Troubleshooting");
+  console.log("6. Search documentation");
+  console.log("");
+  console.log("Enter number or type component name:");
 }
 ```
 
@@ -404,6 +412,7 @@ if (!ARGUMENTS) {
 ## 🔄 COMMON WORKFLOWS
 
 ### 🚀 Starting a New Feature
+
 1. "I want to add user authentication"
 2. Orchestrator analyzes (standard mode)
 3. Confirms approach with you
@@ -413,6 +422,7 @@ if (!ARGUMENTS) {
 7. Auto-updates documentation
 
 ### 🐛 Fixing a Bug
+
 1. "Fix the login button not working"
 2. Orchestrator analyzes (quick/standard)
 3. Delegates to appropriate engineer
@@ -420,12 +430,14 @@ if (!ARGUMENTS) {
 5. QA validates fix
 
 ### 📊 Code Analysis
+
 1. /toduba-code-review
 2. Analyzer examines code
 3. Provides recommendations
 4. Can trigger refactoring
 
 ### 🔄 Deployment Preparation
+
 1. /toduba-test --coverage
 2. /toduba-code-review
 3. /toduba-commit
@@ -440,26 +452,31 @@ if (!ARGUMENTS) {
 ### ❌ Common Issues
 
 #### "Orchestrator not responding"
+
 • Check if Claude Desktop is running
 • Restart Claude Desktop
 • Check .claude-plugin/marketplace.json
 
 #### "Test command not finding tests"
+
 • Ensure test files follow naming convention
 • Check test runner is installed
 • Run: npm install (or equivalent)
 
 #### "Rollback failed"
+
 • Check .toduba/snapshots/ exists
 • Ensure sufficient disk space
 • Try: /toduba-rollback --list
 
 #### "Documentation not updating"
+
 • Run: /toduba-update-docs --force
 • Check /docs directory permissions
 • Verify git status
 
 ### 💡 Pro Tips
+
 • Use --verbose for debugging
 • Check logs in .toduba/logs/
 • Join Discord for community help

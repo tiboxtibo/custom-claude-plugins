@@ -5,15 +5,17 @@ allowed-tools:
   - Grep
 argument-hint: "[message]"
 description: "Crea commit con messaggi strutturati seguendo best practices"
-model: haiku
+model: sonnet
 ---
 
 # Toduba Commit - Gestione Commit Strutturati 📝
 
 ## Obiettivo
+
 Creare commit Git con messaggi ben strutturati, seguendo le convenzioni e best practices del progetto.
 
 ## Argomenti
+
 - `message` (opzionale): Messaggio di commit personalizzato
 
 Argomenti ricevuti: $ARGUMENTS
@@ -36,6 +38,7 @@ MODIFIED_FILES=$(git status --porcelain | wc -l)
 ### Fase 2: Categorizzazione Modifiche
 
 Determina il tipo di commit:
+
 - `feat`: Nuova funzionalità
 - `fix`: Bug fix
 - `docs`: Solo documentazione
@@ -48,6 +51,7 @@ Determina il tipo di commit:
 ### Fase 3: Generazione Messaggio
 
 #### Formato Conventional Commits:
+
 ```
 <type>(<scope>): <description>
 
@@ -57,6 +61,7 @@ Determina il tipo di commit:
 ```
 
 #### Esempi:
+
 ```
 feat(auth): add JWT token refresh capability
 
@@ -110,26 +115,28 @@ EOF
 const generateCommitMessage = (changes) => {
   // Analizza file modificati
   const analysis = {
-    hasNewFiles: changes.some(c => c.status === 'A'),
-    hasDeletedFiles: changes.some(c => c.status === 'D'),
-    hasModifiedFiles: changes.some(c => c.status === 'M'),
-    mainlyFrontend: changes.filter(c => c.path.includes('components')).length > 0,
-    mainlyBackend: changes.filter(c => c.path.includes('api')).length > 0,
-    mainlyTests: changes.filter(c => c.path.includes('.test.')).length > 0,
-    mainlyDocs: changes.filter(c => c.path.match(/\.(md|txt|doc)/)).length > 0
+    hasNewFiles: changes.some((c) => c.status === "A"),
+    hasDeletedFiles: changes.some((c) => c.status === "D"),
+    hasModifiedFiles: changes.some((c) => c.status === "M"),
+    mainlyFrontend:
+      changes.filter((c) => c.path.includes("components")).length > 0,
+    mainlyBackend: changes.filter((c) => c.path.includes("api")).length > 0,
+    mainlyTests: changes.filter((c) => c.path.includes(".test.")).length > 0,
+    mainlyDocs:
+      changes.filter((c) => c.path.match(/\.(md|txt|doc)/)).length > 0,
   };
 
   // Determina tipo
-  let type = 'chore';
-  if (analysis.hasNewFiles && !analysis.mainlyTests) type = 'feat';
-  if (analysis.mainlyTests) type = 'test';
-  if (analysis.mainlyDocs) type = 'docs';
+  let type = "chore";
+  if (analysis.hasNewFiles && !analysis.mainlyTests) type = "feat";
+  if (analysis.mainlyTests) type = "test";
+  if (analysis.mainlyDocs) type = "docs";
 
   // Determina scope
-  let scope = 'general';
-  if (analysis.mainlyFrontend) scope = 'ui';
-  if (analysis.mainlyBackend) scope = 'api';
-  if (analysis.mainlyTests) scope = 'test';
+  let scope = "general";
+  if (analysis.mainlyFrontend) scope = "ui";
+  if (analysis.mainlyBackend) scope = "api";
+  if (analysis.mainlyTests) scope = "test";
 
   // Genera descrizione
   const description = summarizeChanges(changes);
@@ -137,7 +144,7 @@ const generateCommitMessage = (changes) => {
   return {
     type,
     scope,
-    description
+    description,
   };
 };
 ```
@@ -145,6 +152,7 @@ const generateCommitMessage = (changes) => {
 ## Template Messaggi
 
 ### Feature
+
 ```
 feat(module): add new feature description
 
@@ -156,6 +164,7 @@ Related to #ISSUE
 ```
 
 ### Bug Fix
+
 ```
 fix(module): resolve issue with X
 
@@ -166,6 +175,7 @@ Fixes #ISSUE
 ```
 
 ### Refactoring
+
 ```
 refactor(module): improve X structure
 
@@ -216,6 +226,7 @@ Files: 5 changed, 203 insertions(+), 10 deletions(-)
 ```
 
 ## Best Practices
+
 1. Commit atomici (una feature per commit)
 2. Messaggi descrittivi e chiari
 3. Usare tempo presente imperativo
