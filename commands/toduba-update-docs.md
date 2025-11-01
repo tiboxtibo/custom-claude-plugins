@@ -6,53 +6,109 @@ allowed-tools:
   - Bash
   - Glob
   - Grep
-argument-hint: "[--check] [--full] [--smart] [--format md|html|json|pdf]"
-description: "Smart incremental updates con cache e multiple export formats"
+argument-hint: "[--check] [--full] [--smart] [--service <name>] [--format md|html|json|pdf]"
+description: "Smart incremental updates con cache e multiple export formats per struttura gerarchica V2.0"
 ---
 
-# Toduba Update Docs - Smart Incremental Updates 🔄
+# Toduba Update Docs V2.0 - Smart Incremental Updates 🔄
 
 ## Obiettivo
 
-Aggiornamento intelligente con cache, change detection avanzata e supporto per multiple export formats.
+Aggiornamento intelligente e incrementale della documentazione gerarchica V2.0 (docs/global, docs/services/, docs/operations/) con cache, change detection avanzata e supporto per multiple export formats.
 
 ## Argomenti
 
 - `--check`: Mostra cosa verrebbe aggiornato senza modificare
 - `--full`: Forza rigenerazione completa (equivalente a toduba-init --force)
 - `--smart`: Abilita cache e ottimizzazioni AI (default: on)
+- `--service <name>`: Aggiorna solo documentazione per il servizio specificato
 - `--format`: Formato export (md, html, json, pdf) - default: md
 
 Argomenti ricevuti: $ARGUMENTS
 
+## Nuova Struttura Supportata (V2.0)
+
+```
+docs/
+├── .toduba-meta/              # Metadata e tracking
+│   ├── project-type.json
+│   ├── services.json
+│   ├── last-update.json
+│   └── service_*.json
+│
+├── global/                    # Documentazione globale
+│   ├── README.md
+│   ├── ARCHITECTURE.md
+│   ├── SETUP.md
+│   ├── CONTRIBUTING.md
+│   └── adr/
+│
+├── services/                  # Per-service documentation
+│   └── [service-name]/
+│       ├── README.md
+│       ├── SETUP.md
+│       ├── ARCHITECTURE.md
+│       ├── TECH-STACK.md
+│       ├── STYLE-GUIDE.md
+│       ├── ENDPOINTS.md (condizionale)
+│       ├── DATABASE.md (condizionale)
+│       ├── TESTING.md
+│       └── TROUBLESHOOTING.md
+│
+└── operations/                # DevOps docs
+    ├── DEPLOYMENT.md
+    ├── CI-CD.md
+    ├── MONITORING.md
+    ├── SECURITY.md
+    └── ENVIRONMENT-VARS.md
+```
+
 ## Pre-requisiti
 
 ```bash
-# Verifica che /docs esista
+# Verifica che docs/ esista
 if [ ! -d "docs" ]; then
   echo "❌ Errore: Documentazione non trovata!"
-  echo "   Esegui prima: /toduba-init"
+  echo "   Esegui prima: /toduba-system:toduba-init"
   exit 1
 fi
 
-# Verifica metadata.json
-if [ ! -f "docs/metadata.json" ]; then
-  echo "⚠️ metadata.json mancante - rigenerazione completa necessaria"
-  # Fallback a toduba-init
+# Verifica nuova struttura V2.0
+if [ ! -d "docs/.toduba-meta" ]; then
+  echo "⚠️ Struttura documentazione V1.0 rilevata!"
+  echo "   Aggiorna alla V2.0 con: /toduba-system:toduba-init --force"
+  echo "   (La vecchia documentazione verrà backuppata automaticamente)"
+  exit 1
+fi
+
+# Verifica metadata essenziali
+if [ ! -f "docs/.toduba-meta/last-update.json" ]; then
+  echo "⚠️ Metadata mancante - rigenerazione completa necessaria"
+  echo "   Esegui: /toduba-system:toduba-init --force"
+  exit 1
 fi
 ```
 
-## Processo di Aggiornamento Intelligente
+## Processo di Aggiornamento Intelligente V2.0
 
-### Fase 1: Analisi Cambiamenti
+### Fase 1: Analisi Cambiamenti (Struttura Gerarchica)
 
 #### 1.1 Lettura Stato Precedente
 
-```javascript
-// Leggi metadata.json
-const metadata = JSON.parse(readFile("docs/metadata.json"));
-const lastCommit = metadata.git_info.last_commit;
-const lastUpdate = metadata.last_updated;
+```bash
+# Leggi metadata V2.0
+LAST_COMMIT=$(cat docs/.toduba-meta/last-update.json | grep -o '"git_commit": *"[^"]*"' | cut -d'"' -f4)
+LAST_UPDATE=$(cat docs/.toduba-meta/last-update.json | grep -o '"timestamp": *"[^"]*"' | cut -d'"' -f4)
+PROJECT_TYPE=$(cat docs/.toduba-meta/project-type.json | grep -o '"type": *"[^"]*"' | cut -d'"' -f4)
+
+# Leggi lista servizi
+SERVICES_LIST=$(cat docs/.toduba-meta/services.json | grep -o '"name": *"[^"]*"' | cut -d'"' -f4)
+
+echo "📊 Stato precedente:"
+echo "   • Ultimo aggiornamento: $LAST_UPDATE"
+echo "   • Ultimo commit: ${LAST_COMMIT:0:7}"
+echo "   • Tipo progetto: $PROJECT_TYPE"
+echo "   • Servizi: $(echo "$SERVICES_LIST" | wc -l)"
 ```
 
 #### 1.2 Calcolo Differenze
@@ -80,21 +136,60 @@ git diff --name-only ${LAST_COMMIT}..HEAD | while read file; do
 done
 ```
 
-### Fase 2: Decisione Aggiornamento
+### Fase 2: Decisione Aggiornamento (Struttura Gerarchica V2.0)
 
-#### Matrice di Update:
+#### Matrice di Update per Struttura V2.0:
 
 ```
 Cambiamenti rilevati → Documenti da aggiornare
-─────────────────────────────────────────────
-API changes         → API_ENDPOINTS.md
-Frontend changes    → COMPONENTS.md
-Database changes    → DATABASE_SCHEMA.md
-Test changes        → TESTING.md
-Config changes      → CONFIGURATION.md
-Package changes     → DEPENDENCIES.md
-Major refactoring   → ARCHITECTURE.md
-Any changes         → INDEX.md, metadata.json
+────────────────────────────────────────────────────────
+GLOBAL SCOPE:
+- Root files changes          → docs/global/README.md
+- Architecture changes        → docs/global/ARCHITECTURE.md
+- Contributing changes        → docs/global/CONTRIBUTING.md
+- Setup changes (monorepo)    → docs/global/SETUP.md
+
+SERVICE SCOPE (per ogni servizio modificato):
+- Source code changes         → docs/services/[name]/ARCHITECTURE.md
+- API/Routes changes          → docs/services/[name]/ENDPOINTS.md
+- Database/models changes     → docs/services/[name]/DATABASE.md
+- Dependencies changes        → docs/services/[name]/TECH-STACK.md
+- Test changes               → docs/services/[name]/TESTING.md
+- Style/conventions          → docs/services/[name]/STYLE-GUIDE.md
+- Any service changes        → docs/services/[name]/README.md
+
+OPERATIONS SCOPE:
+- CI/CD config changes        → docs/operations/CI-CD.md
+- Deployment scripts         → docs/operations/DEPLOYMENT.md
+- Monitoring config          → docs/operations/MONITORING.md
+- Security policies          → docs/operations/SECURITY.md
+- Env vars changes           → docs/operations/ENVIRONMENT-VARS.md
+
+METADATA (always):
+- docs/.toduba-meta/last-update.json
+- docs/.toduba-meta/service_*.json (se servizio modificato)
+```
+
+#### Rilevamento Servizio da File Modificato
+
+```bash
+detect_affected_service() {
+  local file_path="$1"
+
+  # Leggi servizi e i loro path
+  while IFS= read -r service_name; do
+    service_path=$(cat "docs/.toduba-meta/service_${service_name}.json" | grep -o '"path": *"[^"]*"' | cut -d'"' -f4)
+
+    # Se il file è nel path del servizio
+    if [[ "$file_path" == "$service_path"* ]]; then
+      echo "$service_name"
+      return
+    fi
+  done <<< "$SERVICES_LIST"
+
+  # Se non trovato, è probabilmente global
+  echo "global"
+}
 ```
 
 #### Soglie per Update:
